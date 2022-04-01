@@ -1,7 +1,7 @@
 class TicTacGame:
 
     def __init__(self):
-        self.__board = [0 for i in range(9)]
+        self.board = [0 for i in range(9)]
         #0 - empty, 1 - x, 2 - 0
 
     def show_board(self):
@@ -16,11 +16,11 @@ class TicTacGame:
                 raise Exception('Wrong value of board')
 
         print('\n{0} | {1} | {2}\n{3} | {4} | {5}\n{6} | {7} | {8}\n'.format(
-        field_value(self.__board[0]), field_value(self.__board[1]), 
-        field_value(self.__board[2]), field_value(self.__board[3]), 
-        field_value(self.__board[4]), field_value(self.__board[5]), 
-        field_value(self.__board[6]), field_value(self.__board[7]), 
-        field_value(self.__board[8])))
+        field_value(self.board[0]), field_value(self.board[1]), 
+        field_value(self.board[2]), field_value(self.board[3]), 
+        field_value(self.board[4]), field_value(self.board[5]), 
+        field_value(self.board[6]), field_value(self.board[7]), 
+        field_value(self.board[8])))
 
     def show_board_pos(self):
         print('1 | 2 | 3\n4 | 5 | 6\n7 | 8 | 9')
@@ -31,18 +31,16 @@ class TicTacGame:
 
             if not (1 <= int(num) <= 9):
                 return 1
-            if self.__board[int(num) - 1] != 0:
+            if self.board[int(num) - 1] != 0:
                 return 2
             return 0
 
         except ValueError:
             return 3
         
-    def move(self, x_flag):
+    def move(self, move_pos, x_flag):
 
-        move = input()
-
-        valid_num = self.validate_input(move)
+        valid_num = self.validate_input(move_pos)
             
         if valid_num == 1:
             print('INCORRECT POSITION ENTERED - ENTER A NUMBER FROM 1 TO 9')
@@ -54,10 +52,10 @@ class TicTacGame:
             print('INCORRECT POSITION ENTERED - ENTER AN INTEGER NUMBER')
         
         else:
-            self.__board[int(move) - 1] = int(not x_flag) + 1
-            return 0
+            self.board[int(move_pos) - 1] = int(not x_flag) + 1
+            return 1
 
-        return 1
+        return 0
 
     def start_game(self):
         print('START GAME')
@@ -66,7 +64,7 @@ class TicTacGame:
 
         while True:
 
-            self.show_board_pos()D
+            self.show_board_pos()
             self.show_board()
 
             if x_flag:
@@ -74,8 +72,9 @@ class TicTacGame:
             else:
                 print('move for o')
 
-            
-            if self.move(x_flag):
+            move = input()
+
+            if not self.move(move, x_flag):
                 continue
             
             
@@ -89,12 +88,13 @@ class TicTacGame:
                 else:
                     print('draw')
 
+                self.show_board()
                 print('0 - exit, 1 - play again')
                 
                 inp = int(input())
                 if inp:
                     for i in range(9):
-                        self.__board[i] = 0
+                        self.board[i] = 0
                     continue
                 else:
                     print('END GAME')
@@ -108,28 +108,28 @@ class TicTacGame:
     def check_winner(self):
         # 0 - no, 1 - x, 2 - o, 3 - draw
         for i in range(3):
-            if (self.__board[i * 3] == self.__board[i * 3 + 1] == self.__board[i * 3 + 2] != 0):
-                if self.__board[i * 3] == 1:
+            if (self.board[i * 3] == self.board[i * 3 + 1] == self.board[i * 3 + 2] != 0):
+                if self.board[i * 3] == 1:
                     return 1
                 return 2
 
-            if (self.__board[i] == self.__board[i + 3] == self.__board[i + 6] != 0):
-                if self.__board[i] == 1:
+            if (self.board[i] == self.board[i + 3] == self.board[i + 6] != 0):
+                if self.board[i] == 1:
                     return 1
                 return 2
 
-        if (self.__board[0] == self.__board[4] == self.__board[8] != 0):
-            if self.__board[0] == 1:
+        if (self.board[0] == self.board[4] == self.board[8] != 0):
+            if self.board[0] == 1:
                 return 1
             return 2
 
-        if (self.__board[2] == self.__board[4] == self.__board[6] != 0):
-            if self.__board[2] == 1:
+        if (self.board[2] == self.board[4] == self.board[6] != 0):
+            if self.board[2] == 1:
                 return 1
             return 2
 
         for i in range(9):
-            if self.__board[i] == 0:
+            if self.board[i] == 0:
                 return 0
 
         return 3
@@ -137,3 +137,4 @@ class TicTacGame:
 if __name__ == "__main__":
     game = TicTacGame()
     game.start_game()
+    
