@@ -1,5 +1,6 @@
 """Tic Tac Game Module"""
 
+
 class TicTacGame:
     """Tic Tac Game Class"""
 
@@ -7,7 +8,7 @@ class TicTacGame:
         """Initialization function"""
 
         self.board = [0 for i in range(9)]
-        #0 - empty, 1 - x, 2 - 0
+        # 0 - empty, 1 - x, 2 - 0
 
     def show_board(self):
         """Function show board"""
@@ -84,7 +85,6 @@ class TicTacGame:
             if not self.move(move, x_flag):
                 continue
 
-
             check = self.check_winner()
 
             if check:
@@ -109,7 +109,6 @@ class TicTacGame:
 
             x_flag = not x_flag
 
-
     def check_winner(self):
         """Check board"""
 
@@ -117,7 +116,8 @@ class TicTacGame:
         output = 3
 
         for i in range(3):
-            if self.board[i * 3] == self.board[i * 3 + 1] == self.board[i * 3 + 2] != 0:
+            if self.board[i * 3] == self.board[i * 3 + 1]\
+                    == self.board[i * 3 + 2] != 0:
                 if self.board[i * 3] == 1:
                     output = 1
                     break
@@ -134,7 +134,7 @@ class TicTacGame:
                 break
 
         if self.board[0] == self.board[4] == self.board[8] != 0\
-        or self.board[2] == self.board[4] == self.board[6] != 0:
+                or self.board[2] == self.board[4] == self.board[6] != 0:
             if self.board[4] == 1:
                 output = 1
             else:
@@ -147,7 +147,7 @@ class TicTacGame:
 
         return output
 
+
 if __name__ == "__main__":
     game = TicTacGame()
     game.start_game()
-    

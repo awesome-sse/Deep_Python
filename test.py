@@ -5,6 +5,7 @@ import unittest
 
 from tic_tac_toe import TicTacGame
 
+
 class TestTicTacToe(TestCase):
     """Testing class"""
 
@@ -19,9 +20,9 @@ class TestTicTacToe(TestCase):
         self.assertTrue(game.validate_input("10") == 1)
         self.assertTrue(game.validate_input("-1") == 1)
 
-
     def test_validate_input_again(self):
-        """Testing for the correct function validate_input output when enter the same positions"""
+        """Testing for the correct function validate_input\
+        output when enter the same positions"""
 
         game = TicTacGame()
         game.move(1, True)
@@ -45,7 +46,7 @@ class TestTicTacToe(TestCase):
 
         game = TicTacGame()
 
-        #Check vertical
+        # Check vertical
         game.board = [
             1, 1, 0,
             1, 2, 2,
@@ -70,7 +71,7 @@ class TestTicTacToe(TestCase):
 
         self.assertTrue(game.check_winner() == 1)
 
-        #Check horizontal
+        # Check horizontal
         game.board = [
             2, 2, 2,
             0, 1, 1,
@@ -95,7 +96,7 @@ class TestTicTacToe(TestCase):
 
         self.assertTrue(game.check_winner() == 2)
 
-        #Check diagonal
+        # Check diagonal
         game.board = [
             1, 1, 2,
             0, 1, 0,
@@ -112,7 +113,7 @@ class TestTicTacToe(TestCase):
 
         self.assertTrue(game.check_winner() == 2)
 
-        #Check draw
+        # Check draw
         game.board = [
             2, 2, 1,
             1, 1, 2,
@@ -129,7 +130,7 @@ class TestTicTacToe(TestCase):
 
         self.assertTrue(game.check_winner() == 3)
 
-        #Check game continious
+        # Check game continious
         game.board = [
             0, 0, 0,
             0, 1, 0,
@@ -153,6 +154,7 @@ class TestTicTacToe(TestCase):
         ]
 
         self.assertFalse(game.check_winner())
+
 
 if __name__ == "__main__":
     unittest.main()
