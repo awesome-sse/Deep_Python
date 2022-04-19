@@ -1,159 +1,214 @@
-"""Tests for Tic_Tac_Toe_Module"""
-
-from unittest import TestCase
+"""Testting CustomList class"""
 import unittest
+from unittest import TestCase
+from CustomList import CustomList
 
-from tic_tac_toe import TicTacGame
 
+class TestCustomList(TestCase):
+    """Testing CustomList class"""
 
-class TestTicTacToe(TestCase):
-    """Testing class"""
+    def assert_equal_customlist(self, list1, list2):
+        """Assert equals CustomLists"""
+        self.assertEqual(len(list1), len(list2))
 
-    def test_validate_input(self):
-        """Testing for correct function validate_input output"""
+        for el1, el2 in zip(list1, list2):
+            self.assertEqual(el1, el2)
 
-        game = TicTacGame()
-        for i in range(1, 10):
-            self.assertTrue(game.validate_input(str(i)) == 0)
-        self.assertTrue(game.validate_input("a") == 3)
-        self.assertTrue(game.validate_input("0") == 1)
-        self.assertTrue(game.validate_input("10") == 1)
-        self.assertTrue(game.validate_input("-1") == 1)
+    def test_eq(self):
+        """Testing == operator"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, 3])
+        self.assertTrue(list1 == list2)
 
-    def test_validate_input_again(self):
-        """Testing for the correct function validate_input\
-        output when enter the same positions"""
+        list2 = CustomList([2, 2, 2])
+        self.assertTrue(list1 == list2)
 
-        game = TicTacGame()
-        game.move(1, True)
-        self.assertEqual(game.board[0], 1)
-        self.assertTrue(game.validate_input("1") == 2)
+        list2 = CustomList([1, 2, 2])
+        self.assertFalse(list1 == list2)
 
-    def test_move(self):
-        """Testing move function"""
+    def test_ne(self):
+        """Testing != operator"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, 3])
+        self.assertFalse(list1 != list2)
 
-        game = TicTacGame()
-        self.assertEqual(game.board[0], 0)
-        game.move(1, True)
-        self.assertEqual(game.board[0], 1)
+        list2 = CustomList([2, 2, 2])
+        self.assertFalse(list1 != list2)
 
-        self.assertEqual(game.board[1], 0)
-        game.move(2, False)
-        self.assertEqual(game.board[1], 2)
+        list2 = CustomList([1, 2, 2])
+        self.assertTrue(list1 != list2)
 
-    def test_check_winner(self):
-        """Testing check_winnew function"""
+    def test_lt(self):
+        """Testing < operator"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, 3])
+        self.assertFalse(list1 < list2)
 
-        game = TicTacGame()
+        list2 = CustomList([1, 2, 3, 1])
+        self.assertTrue(list1 < list2)
 
-        # Check vertical
-        game.board = [
-            1, 1, 0,
-            1, 2, 2,
-            1, 0, 2
-        ]
+        list2 = CustomList([1, 2, 4])
+        self.assertTrue(list1 < list2)
 
-        self.assertTrue(game.check_winner() == 1)
+    def test_le(self):
+        """Testing <= operator"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, 3])
+        self.assertTrue(list1 <= list2)
 
-        game.board = [
-            1, 2, 1,
-            1, 2, 0,
-            0, 2, 1
-        ]
+        list2 = CustomList([1, 2, 2, 1])
+        self.assertTrue(list1 <= list2)
 
-        self.assertTrue(game.check_winner() == 2)
+        list2 = CustomList([1, 2, 2])
+        self.assertFalse(list1 <= list2)
 
-        game.board = [
-            2, 2, 1,
-            2, 1, 1,
-            0, 0, 1
-        ]
+    def test_gt(self):
+        """Testing > operator"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, 3])
+        self.assertFalse(list1 > list2)
 
-        self.assertTrue(game.check_winner() == 1)
+        list2 = CustomList([1, 2, 2])
+        self.assertTrue(list1 > list2)
 
-        # Check horizontal
-        game.board = [
-            2, 2, 2,
-            0, 1, 1,
-            1, 1, 0
-        ]
+        list2 = CustomList([1, 2, 2, 3])
+        self.assertFalse(list1 > list2)
 
-        self.assertTrue(game.check_winner() == 2)
+    def test_ge(self):
+        """Testing >= operator"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, 3])
+        self.assertTrue(list1 >= list2)
 
-        game.board = [
-            1, 2, 2,
-            1, 1, 1,
-            2, 0, 0
-        ]
+        list2 = CustomList([1, 2, 2])
+        self.assertTrue(list1 >= list2)
 
-        self.assertTrue(game.check_winner() == 1)
+        list2 = CustomList([1, 2, 2, 3])
+        self.assertFalse(list1 >= list2)
 
-        game.board = [
-            0, 1, 0,
-            0, 1, 1,
-            2, 2, 2
-        ]
+    def test_str_(self):
+        """Testing str() for CustomList"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, -3])
 
-        self.assertTrue(game.check_winner() == 2)
+        self.assertEqual(str(list1),  "[1, 2, 3] 6")
+        self.assertEqual(str(list2),  "[1, 2, -3] 0")
 
-        # Check diagonal
-        game.board = [
-            1, 1, 2,
-            0, 1, 0,
-            2, 2, 1
-        ]
+    def test_customlist_add_customlist(self):
+        """Testing CustomList + CustomList"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, -3])
+        list_sum = list1 + list2
 
-        self.assertTrue(game.check_winner() == 1)
+        self.assert_equal_customlist(list_sum, CustomList([2, 4, 0]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3]))
+        self.assert_equal_customlist(list2, CustomList([1, 2, -3]))
 
-        game.board = [
-            1, 1, 2,
-            1, 2, 0,
-            2, 0, 1
-        ]
+        list1 = CustomList([1, 2, 3, 2])
+        list2 = CustomList([1, 2])
+        list_sum = list1 + list2
 
-        self.assertTrue(game.check_winner() == 2)
+        self.assert_equal_customlist(list_sum, CustomList([2, 4, 3, 2]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3, 2]))
+        self.assert_equal_customlist(list2, CustomList([1, 2]))
 
-        # Check draw
-        game.board = [
-            2, 2, 1,
-            1, 1, 2,
-            2, 1, 1
-        ]
+    def test_customlist_sub_customlist(self):
+        """Testing CustomList - CustomList"""
+        list1 = CustomList([1, 2, 3])
+        list2 = CustomList([1, 2, -3])
+        list_sub = list1 - list2
 
-        self.assertTrue(game.check_winner() == 3)
+        self.assert_equal_customlist(list_sub, CustomList([0, 0, 6]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3]))
+        self.assert_equal_customlist(list2, CustomList([1, 2, -3]))
 
-        game.board = [
-            2, 1, 2,
-            1, 1, 2,
-            1, 2, 1
-        ]
+        list1 = CustomList([1, 2])
+        list2 = CustomList([2, 3, 4, 5])
+        list_sub = list1 - list2
 
-        self.assertTrue(game.check_winner() == 3)
+        self.assert_equal_customlist(list_sub, CustomList([-1, -1, -4, -5]))
+        self.assert_equal_customlist(list1, CustomList([1, 2]))
+        self.assert_equal_customlist(list2, CustomList([2, 3, 4, 5]))
 
-        # Check game continious
-        game.board = [
-            0, 0, 0,
-            0, 1, 0,
-            0, 0, 0
-        ]
+    def test_customlist_add_list(self):
+        """Testing CustomList + list"""
+        list1 = CustomList([1, 2, 3])
+        list2 = list([1, 2, -3])
+        list_sum = list1 + list2
 
-        self.assertFalse(game.check_winner())
+        self.assert_equal_customlist(list_sum, CustomList([2, 4, 0]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3]))
+        self.assert_equal_customlist(list2, [1, 2, -3])
+        self.assertIsInstance(list_sum, CustomList)
 
-        game.board = [
-            0, 2, 0,
-            0, 1, 0,
-            0, 0, 1
-        ]
+        list1 = CustomList([1, 2, 3, 2])
+        list2 = list([1, 2])
+        list_sum = list1 + list2
 
-        self.assertFalse(game.check_winner())
+        self.assert_equal_customlist(list_sum, CustomList([2, 4, 3, 2]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3, 2]))
+        self.assert_equal_customlist(list2, [1, 2])
+        self.assertIsInstance(list_sum, CustomList)
 
-        game.board = [
-            2, 2, 1,
-            1, 1, 2,
-            0, 2, 1
-        ]
+    def test_customlist_sub_list(self):
+        """Testing CustomList - list"""
+        list1 = CustomList([1, 2, 3])
+        list2 = list([1, 2, -3])
+        list_sub = list1 - list2
 
-        self.assertFalse(game.check_winner())
+        self.assert_equal_customlist(list_sub, CustomList([0, 0, 6]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3]))
+        self.assert_equal_customlist(list2, [1, 2, -3])
+        self.assertIsInstance(list_sub, CustomList)
+
+        list1 = CustomList([1, 2, 3, 4])
+        list2 = list([1, 2])
+        list_sub = list1 - list2
+
+        self.assert_equal_customlist(list_sub, CustomList([0, 0, 3, 4]))
+        self.assert_equal_customlist(list1, CustomList([1, 2, 3, 4]))
+        self.assert_equal_customlist(list2, [1, 2])
+        self.assertIsInstance(list_sub, CustomList)
+
+    def test_list_add_customlist(self):
+        """Testing list + CustomList"""
+        list1 = list([1, 2, -3])
+        list2 = CustomList([1, 2, 3])
+        list_sum = list1 + list2
+
+        self.assert_equal_customlist(list_sum, CustomList([2, 4, 0]))
+        self.assert_equal_customlist(list1, [1, 2, -3])
+        self.assert_equal_customlist(list2, CustomList([1, 2, 3]))
+        self.assertIsInstance(list_sum, CustomList)
+
+        list1 = list([1, 2])
+        list2 = CustomList([1, 2, 3, 2])
+        list_sum = list1 + list2
+
+        self.assert_equal_customlist(list_sum, CustomList([2, 4, 3, 2]))
+        self.assert_equal_customlist(list1, [1, 2])
+        self.assert_equal_customlist(list2, CustomList([1, 2, 3, 2]))
+        self.assertIsInstance(list_sum, CustomList)
+
+    def test_list_sub_customlist(self):
+        """Testing list - CustomList"""
+        list1 = list([1, 2, -3])
+        list2 = CustomList([1, 2, 3])
+        list_sub = list1 - list2
+
+        self.assert_equal_customlist(list_sub, CustomList([0, 0, -6]))
+        self.assert_equal_customlist(list1, [1, 2, -3])
+        self.assert_equal_customlist(list2, CustomList([1, 2, 3]))
+        self.assertIsInstance(list_sub, CustomList)
+
+        list1 = list([1, 2])
+        list2 = CustomList([1, 2, 3, 4])
+        list_sub = list1 - list2
+
+        self.assert_equal_customlist(list_sub, CustomList([0, 0, -3, -4]))
+        self.assert_equal_customlist(list1, [1, 2])
+        self.assert_equal_customlist(list2, CustomList([1, 2, 3, 4]))
+        self.assertIsInstance(list_sub, CustomList)
 
 
 if __name__ == "__main__":
