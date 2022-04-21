@@ -1,159 +1,53 @@
-"""Tests for Tic_Tac_Toe_Module"""
-
+"""Testting desc"""
 from unittest import TestCase
 import unittest
+from lru import LRUCache
 
-from tic_tac_toe import TicTacGame
 
+class TestLRUCache(TestCase):
+    """Testing LRUCache class"""
+    def test_init(self):
+        """Testing init LRUCache"""
+        lru = LRUCache(10)
+        self.assertEqual(lru.cache, {})
+        self.assertEqual(lru.keys, [])
+        self.assertEqual(lru.limit, 10)
 
-class TestTicTacToe(TestCase):
-    """Testing class"""
+    def test_set_and_get(self):
+        """Testing set and get functions"""
+        lru = LRUCache(10)
+        lru.set(1, 1)
+        lru.set(2, 2)
 
-    def test_validate_input(self):
-        """Testing for correct function validate_input output"""
+        self.assertTrue(1 in lru.cache)
+        self.assertTrue(2 in lru.cache)
+        self.assertFalse(3 in lru.cache)
 
-        game = TicTacGame()
-        for i in range(1, 10):
-            self.assertTrue(game.validate_input(str(i)) == 0)
-        self.assertTrue(game.validate_input("a") == 3)
-        self.assertTrue(game.validate_input("0") == 1)
-        self.assertTrue(game.validate_input("10") == 1)
-        self.assertTrue(game.validate_input("-1") == 1)
+        self.assertTrue(1 in lru.keys)
+        self.assertTrue(2 in lru.keys)
+        self.assertFalse(3 in lru.keys)
 
-    def test_validate_input_again(self):
-        """Testing for the correct function validate_input\
-        output when enter the same positions"""
+        self.assertEqual(lru.get(1), 1)
+        self.assertEqual(lru.get(2), 2)
+        self.assertEqual(lru.get(3), None)
 
-        game = TicTacGame()
-        game.move(1, True)
-        self.assertEqual(game.board[0], 1)
-        self.assertTrue(game.validate_input("1") == 2)
+    def test_delete_long_ago_used_key(self):
+        """Testing delete element when list overfill"""
+        lru = LRUCache(3)
+        lru.set(1, 1)
+        lru.set(2, 2)
+        lru.set(3, 3)
 
-    def test_move(self):
-        """Testing move function"""
+        self.assertEqual(lru.get(1), 1)
+        self.assertEqual(lru.get(2), 2)
+        self.assertEqual(lru.get(3), 3)
 
-        game = TicTacGame()
-        self.assertEqual(game.board[0], 0)
-        game.move(1, True)
-        self.assertEqual(game.board[0], 1)
+        lru.set(4, 4)
 
-        self.assertEqual(game.board[1], 0)
-        game.move(2, False)
-        self.assertEqual(game.board[1], 2)
-
-    def test_check_winner(self):
-        """Testing check_winnew function"""
-
-        game = TicTacGame()
-
-        # Check vertical
-        game.board = [
-            1, 1, 0,
-            1, 2, 2,
-            1, 0, 2
-        ]
-
-        self.assertTrue(game.check_winner() == 1)
-
-        game.board = [
-            1, 2, 1,
-            1, 2, 0,
-            0, 2, 1
-        ]
-
-        self.assertTrue(game.check_winner() == 2)
-
-        game.board = [
-            2, 2, 1,
-            2, 1, 1,
-            0, 0, 1
-        ]
-
-        self.assertTrue(game.check_winner() == 1)
-
-        # Check horizontal
-        game.board = [
-            2, 2, 2,
-            0, 1, 1,
-            1, 1, 0
-        ]
-
-        self.assertTrue(game.check_winner() == 2)
-
-        game.board = [
-            1, 2, 2,
-            1, 1, 1,
-            2, 0, 0
-        ]
-
-        self.assertTrue(game.check_winner() == 1)
-
-        game.board = [
-            0, 1, 0,
-            0, 1, 1,
-            2, 2, 2
-        ]
-
-        self.assertTrue(game.check_winner() == 2)
-
-        # Check diagonal
-        game.board = [
-            1, 1, 2,
-            0, 1, 0,
-            2, 2, 1
-        ]
-
-        self.assertTrue(game.check_winner() == 1)
-
-        game.board = [
-            1, 1, 2,
-            1, 2, 0,
-            2, 0, 1
-        ]
-
-        self.assertTrue(game.check_winner() == 2)
-
-        # Check draw
-        game.board = [
-            2, 2, 1,
-            1, 1, 2,
-            2, 1, 1
-        ]
-
-        self.assertTrue(game.check_winner() == 3)
-
-        game.board = [
-            2, 1, 2,
-            1, 1, 2,
-            1, 2, 1
-        ]
-
-        self.assertTrue(game.check_winner() == 3)
-
-        # Check game continious
-        game.board = [
-            0, 0, 0,
-            0, 1, 0,
-            0, 0, 0
-        ]
-
-        self.assertFalse(game.check_winner())
-
-        game.board = [
-            0, 2, 0,
-            0, 1, 0,
-            0, 0, 1
-        ]
-
-        self.assertFalse(game.check_winner())
-
-        game.board = [
-            2, 2, 1,
-            1, 1, 2,
-            0, 2, 1
-        ]
-
-        self.assertFalse(game.check_winner())
+        self.assertEqual(lru.get(1), None)
+        self.assertEqual(lru.get(2), 2)
+        self.assertEqual(lru.get(3), 3)
+        self.assertEqual(lru.get(4), 4)
 
 
 if __name__ == "__main__":
