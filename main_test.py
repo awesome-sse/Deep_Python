@@ -16,7 +16,7 @@ class TestCustomClass(TestCase):
         self.assertTrue('custom_line' in dir(inst))
         self.assertFalse('line' in dir(inst))
 
-    def test_class_init_values(self):
+    def test_custom_class_init(self):
         """ Testing Custom init attrs values """
         inst = CustomClass()
         self.assertEqual(inst.custom_x, 50)
