@@ -13,6 +13,19 @@ class TestLRUCache(TestCase):
         self.assertEqual(lru.keys, [])
         self.assertEqual(lru.limit, 10)
 
+    def test_with_limit_eq_1(self):
+        """Testing lru with limit = 1"""
+        lru = LRUCache(1)
+        lru.set("key1", 1)
+
+        self.assertEqual(lru.get("key1"), 1)
+        self.assertEqual(lru.limit, 1)
+
+        lru.set("key2", 2)
+
+        self.assertEqual(lru.get("key1"), None)
+        self.assertEqual(lru.get("key2"), 2)
+
     def test_set_and_get(self):
         """Testing set and get functions"""
         lru = LRUCache(10)
@@ -42,12 +55,46 @@ class TestLRUCache(TestCase):
         self.assertEqual(lru.get(2), 2)
         self.assertEqual(lru.get(3), 3)
 
+        lru.get(1)
         lru.set(4, 4)
 
-        self.assertEqual(lru.get(1), None)
-        self.assertEqual(lru.get(2), 2)
+        self.assertEqual(lru.get(1), 1)
+        self.assertEqual(lru.get(2), None)
         self.assertEqual(lru.get(3), 3)
         self.assertEqual(lru.get(4), 4)
+
+    def test_add_elements(self):
+        """Testing delete element when list overfill"""
+        cache = LRUCache(2)
+        cache.set("k1", "val1")
+        cache.set("k2", "val2")
+
+        self.assertEqual(cache.get("k3"), None)
+        self.assertEqual(cache.get("k2"), "val2")
+        self.assertEqual(cache.get("k1"), "val1")
+
+        cache.set("k3", "val3")
+
+        self.assertEqual(cache.get("k3"), "val3")
+        self.assertEqual(cache.get("k2"), None)
+        self.assertEqual(cache.get("k1"), "val1")
+
+    def test_complete_displacement_of_elements(self):
+        """Testing complete displacement of elements"""
+        cache = LRUCache(2)
+        cache.set("k1", "val1")
+        cache.set("k2", "val2")
+
+        self.assertEqual(cache.get("k2"), "val2")
+        self.assertEqual(cache.get("k1"), "val1")
+
+        cache.set("k3", "val3")
+        cache.set("k4", "val4")
+
+        self.assertEqual(cache.get("k1"), None)
+        self.assertEqual(cache.get("k2"), None)
+        self.assertEqual(cache.get("k3"), "val3")
+        self.assertEqual(cache.get("k4"), "val4")
 
 
 if __name__ == "__main__":
