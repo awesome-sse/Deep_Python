@@ -3,6 +3,7 @@
 
 class CustomMeta(type):
     """Metaclass CustomMeta"""
+
     def __new__(cls, name, bases, classdict):
         attr = []
         for key in classdict:
@@ -17,7 +18,11 @@ class CustomMeta(type):
 
     def change_name_attr(cls, attr, val):
         """Change attr on custom_..."""
-        if not attr[:2] == attr[-2:] == "__":
+
+        if attr[:2] == attr[-2:] == "__":
+            cls.__dict__[attr] = val
+
+        else:
             cls.__dict__["custom_" + attr] = val
 
     def __prepare__(cls, *args):
@@ -26,6 +31,7 @@ class CustomMeta(type):
 
 class CustomClass(metaclass=CustomMeta):
     """Class Customclass"""
+
     x = 50
 
     def __init__(self, val=99):
